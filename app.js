@@ -11,13 +11,38 @@ let todos = [
 app.get('/todos', (req, res) => {
   res.status(200).json(todos); // Send array as JSON
 });
+// GET Single - Read
+app.get('/todos/:id', (req, res) => {
+    const id = parseInt(req.params.id);
 
-// POST New – Create
-app.post('/todos', (req, res) => {
-  const newTodo = { id: todos.length + 1, ...req.body }; // Auto-ID
-  todos.push(newTodo);
-  res.status(201).json(newTodo); // Echo back
+    const todo = todos.find((t) => t.id === id);
+
+    if (!todo) {
+        return res.status(404).json({
+            message: 'Todo not found'
+        });
+    }
+
+    res.status(200).json(todo);
 });
+// GET Active Todos
+app.get('/todos/active', (req, res) => {
+    const active = todos.filter((t) => !t.completed);
+    res.status(200).json(active);
+});
+// GET Single - Read
+app.get('/todos/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+
+    const todo = todos.find((t) => t.id === id);
+
+    if (!todo) {
+        return res.status(404).json({
+            message: 'Todo not found'
+        });
+    }
+
+    res.status(200).json(todo);
 
 // PATCH Update – Partial
 app.patch('/todos/:id', (req, res) => {
